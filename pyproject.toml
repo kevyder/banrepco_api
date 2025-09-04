@@ -1,0 +1,14 @@
+[project]
+name = "banrepco-api"
+version = "0.1.0"
+description = "Useful catalog of APIs for the Bank of the Republic of Colombia"
+readme = "README.md"
+requires-python = ">=3.13"
+authors = [
+    { name = "Kevin Rodríguez", email = "kyrodriguez97@gmail.com" }
+]
+dependencies = [
+    "alembic==1.16.5",
+    "fastapi[standard]==0.116.1",
+    "sqlalchemy-libsql==0.2.0",
+]
