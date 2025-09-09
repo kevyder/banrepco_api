@@ -14,10 +14,11 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+from src.models.base import Base
 # add your model's MetaData object here
 # for 'autogenerate' support
 from src.models.inflation import Inflation
-from src.models.base import Base
+
 # target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
 

@@ -1,8 +1,8 @@
 import csv
 from datetime import datetime
 
-from src.models.inflation import Inflation
 from src.db.session import db
+from src.models.inflation import Inflation
 
 
 def parse_date(date_str: str) -> tuple[int, int]:
