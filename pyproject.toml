@@ -9,8 +9,10 @@ authors = [
 ]
 dependencies = [
     "alembic==1.16.5",
+    "fastapi-pagination==0.14.1",
     "fastapi[standard]==0.116.1",
     "sqlalchemy-libsql==0.2.0",
+    "uvicorn==0.35.0",
 ]
 
 [dependency-groups]
