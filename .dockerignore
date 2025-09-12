@@ -36,9 +36,9 @@ ENV/
 *.swo
 
 # Local Development
-*.env
-.env.*
-!.env.example
+local.db
+.env
+!.env.template
 
 # Docker
 Dockerfile
