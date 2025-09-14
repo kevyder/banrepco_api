@@ -19,3 +19,6 @@ wheels/
 # VSCode settings
 .vscode/
 .devdbrc
+
+# node_modules
+node_modules/
