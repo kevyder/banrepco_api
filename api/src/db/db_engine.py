@@ -3,37 +3,25 @@ import os
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 
-from src.config.enums import Environment
-
 load_dotenv()
-
-ENVIRONMENT = os.getenv("ENVIRONMENT", "development").lower()
 
 
 def get_database_url() -> str:
-    """Get the appropriate database URL based on environment."""
+    """Get the appropriate database URL."""
 
-    if ENVIRONMENT == Environment.DEVELOPMENT.value:
-        return os.environ.get("DATABASE_URL", "sqlite+libsql:///local.db")
+    database_url = os.environ.get("DATABASE_URL")
+    if not database_url:
+        raise ValueError("DATABASE_URL is required.")
 
-    # Production/Staging environment with Turso
-    turso_url = os.environ.get("TURSO_DATABASE_URL")
-    if not turso_url:
-        raise ValueError("TURSO_DATABASE_URL is required for production environment")
-
-    return f"sqlite+{turso_url}?secure=true"
+    return f"sqlite+{database_url}?secure=true"
 
 
 def get_connect_args() -> dict:
-    """Get connection arguments based on environment."""
+    """Get database connection arguments."""
 
-    if ENVIRONMENT == Environment.DEVELOPMENT.value:
-        return {}
-
-    # Production/Staging environment with Turso auth token
-    auth_token = os.environ.get("TURSO_AUTH_TOKEN")
+    auth_token = os.environ.get("DATABASE_AUTH_TOKEN")
     if not auth_token:
-        raise ValueError("TURSO_AUTH_TOKEN is required for production environment")
+        raise ValueError("DATABASE_AUTH_TOKEN is required.")
 
     return {"auth_token": auth_token}
 

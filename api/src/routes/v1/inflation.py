@@ -13,7 +13,7 @@ from src.use_cases.inflation import InflationUseCase
 router = APIRouter(prefix="/inflation", tags=["inflation"])
 
 
-@router.get("/", response_model=Page[InflationData])
+@router.get("", response_model=Page[InflationData])
 async def get_inflation_data(
     sort: Literal["asc", "desc"] = Query(
         default="desc",
