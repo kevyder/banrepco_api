@@ -22,3 +22,6 @@ wheels/
 
 # node_modules
 node_modules/
+
+# cloudflare workers
+.wrangler/
