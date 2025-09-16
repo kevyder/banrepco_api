@@ -4,7 +4,7 @@
  */
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "banrepco",
+	"name": "banrepco-api",
 	"main": "js/src/index.ts",
 	"compatibility_date": "2025-05-23",
 	"compatibility_flags": [
@@ -45,9 +45,9 @@
 	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
 	"containers": [
 		{
-			"class_name": "MyContainer",
+			"class_name": "APIContainer",
 			"image": "api/Dockerfile",
-			"max_instances": 1,
+			"max_instances": 3,
 			"instance_type": "dev",
 			"name": "banrepco-api-container"
 		}
@@ -55,17 +55,17 @@
 	"durable_objects": {
 		"bindings": [
 			{
-				"class_name": "MyContainer",
-				"name": "MY_CONTAINER"
+				"class_name": "APIContainer",
+				"name": "API_CONTAINER"
 			}
 		]
 	},
 	"migrations": [
 		{
 			"new_sqlite_classes": [
-				"MyContainer"
+				"APIContainer"
 			],
-			"tag": "v1"
+			"tag": "v2"
 		}
 	]
 }

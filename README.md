@@ -66,9 +66,9 @@ Once the server is running, you can access:
 
 ### Available Endpoints
 
-- `GET /inflation`: Get paginated inflation data
-- `GET /inflation/date-range`: Get inflation data by date range
-- `GET /inflation/{year}/{month}`: Get specific inflation record
+- `GET v1/inflation`: Get paginated inflation data
+- `GET v1/inflation/date-range`: Get inflation data by date range
+- `GET v1/inflation/{year}/{month}`: Get specific inflation record
 
 ## Contributing
 
