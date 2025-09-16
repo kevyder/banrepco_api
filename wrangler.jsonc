@@ -28,13 +28,51 @@
 	 * Environment Variables
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
 	 */
-	"vars": {
-		"ENVIRONMENT": "development"
-	},
 	"env": {
+		"staging": {
+			"route": "banrepco.stg.kevyder.dev/*",
+			"vars": {
+				"ENVIRONMENT": "staging"
+			},
+			"containers": [
+				{
+					"class_name": "APIContainer",
+					"image": "api/Dockerfile",
+					"max_instances": 2,
+					"instance_type": "dev",
+					"name": "banrepco-api-container-stg"
+				}
+			],
+			"durable_objects": {
+				"bindings": [
+					{
+						"class_name": "APIContainer",
+						"name": "API_CONTAINER_STG"
+					}
+				]
+			}
+		},
 		"production": {
+			"route": "banrepco.kevyder.dev/*",
 			"vars": {
 				"ENVIRONMENT": "production"
+			},
+			"containers": [
+				{
+					"class_name": "APIContainer",
+					"image": "api/Dockerfile",
+					"max_instances": 3,
+					"instance_type": "dev",
+					"name": "banrepco-api-container"
+				}
+			],
+			"durable_objects": {
+				"bindings": [
+					{
+						"class_name": "APIContainer",
+						"name": "API_CONTAINER"
+					}
+				]
 			}
 		}
 	},
@@ -52,23 +90,6 @@
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
 	 */
 	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
-	"containers": [
-		{
-			"class_name": "APIContainer",
-			"image": "api/Dockerfile",
-			"max_instances": 3,
-			"instance_type": "dev",
-			"name": "banrepco-api-container"
-		}
-	],
-	"durable_objects": {
-		"bindings": [
-			{
-				"class_name": "APIContainer",
-				"name": "API_CONTAINER"
-			}
-		]
-	},
 	"migrations": [
 		{
 			"new_sqlite_classes": [

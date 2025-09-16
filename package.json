@@ -3,15 +3,16 @@
 	"version": "1.0.0",
 	"private": false,
 	"scripts": {
-		"deploy": "wrangler deploy",
+		"deploy": "wrangler deploy --env production",
+		"deploy:staging": "wrangler deploy --env staging",
 		"dev": "wrangler dev",
 		"start": "wrangler dev",
 		"cf-typegen": "wrangler types"
 	},
 	"devDependencies": {
-		"@types/node": "^24.3.3",
+		"@types/node": "24.5.0",
 		"typescript": "5.9.2",
-		"wrangler": "^4.36.0"
+		"wrangler": "4.37.0"
 	},
 	"dependencies": {
 		"@cloudflare/containers": "0.0.28"
