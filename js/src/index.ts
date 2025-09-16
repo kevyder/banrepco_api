@@ -5,7 +5,7 @@ import { Hono } from "hono";
 
 export class MyContainer extends Container {
   defaultPort = 3000;
-  sleepAfter = "10m";
+  sleepAfter = "5m";
   envVars = {
     ENVIRONMENT: env.ENVIRONMENT,
     DATABASE_URL: env.DATABASE_URL,
