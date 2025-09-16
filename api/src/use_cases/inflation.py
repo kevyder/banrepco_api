@@ -65,7 +65,7 @@ class InflationUseCase:
         self,
         date_range: InflationDateRange,
         sort_order: Literal["asc", "desc"] = "asc",
-    ) -> list[Inflation]:
+    ) -> Query:
         """
         Get inflation data filtered by date range without pagination.
 
@@ -93,4 +93,4 @@ class InflationUseCase:
         else:
             query = query.order_by(asc(Inflation.year), asc(Inflation.month))
 
-        return query.all()
+        return query

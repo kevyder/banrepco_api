@@ -1,13 +1,12 @@
-from typing import List, Literal
+from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from fastapi_pagination import Page, Params
+from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.orm import Session
 
 from src.db.session import db
-from src.models.inflation import Inflation
-from src.schemas.inflation import InflationData, InflationDateRange
+from src.schemas.inflation import InflationData, InflationDateRange, InflationPaginateParams
 from src.use_cases.inflation import InflationUseCase
 
 router = APIRouter(prefix="/inflation", tags=["inflation"])
@@ -19,7 +18,7 @@ async def get_inflation_data(
         default="desc",
         description="Sort order by year and month"
     ),
-    params: Params = Depends(),
+    params: InflationPaginateParams = Depends(),
     db_session: Session = Depends(db.get_db)
 ) -> Page[InflationData]:
     """
@@ -27,7 +26,6 @@ async def get_inflation_data(
 
     Args:
         sort: Sort order by year and month ('asc' or 'desc')
-        date_range: Date range parameters for filtering
         params: Pagination parameters (handled automatically by fastapi-pagination)
         db_session: Database session (injected by FastAPI)
 
@@ -74,20 +72,22 @@ async def get_inflation_data_by_date(
     return result
 
 
-@router.get("/date-range", response_model=list[InflationData])
+@router.get("/date-range", response_model=Page[InflationData])
 async def get_inflation_data_by_date_range(
     date_range: InflationDateRange = Depends(),
+    params: InflationPaginateParams = Depends(),
     sort: Literal["asc", "desc"] = Query(
         default="asc",
         description="Sort order by year and month"
     ),
     db_session: Session = Depends(db.get_db)
-) -> List[Inflation]:
+) -> Page[InflationData]:
     """
     Retrieve inflation data filtered by date range without pagination.
 
     Args:
         date_range: Date range parameters for filtering (year and month)
+        params: Pagination parameters (handled automatically by fastapi-pagination)
         sort: Sort order by year and month ('asc' or 'desc')
         db_session: Database session (injected by FastAPI)
 
@@ -95,7 +95,9 @@ async def get_inflation_data_by_date_range(
         List of inflation data records within the specified date range
     """
     use_case = InflationUseCase(db_session)
-    return use_case.get_inflation_data_by_date_range(
+    query = use_case.get_inflation_data_by_date_range(
         date_range=date_range,
         sort_order=sort
     )
+
+    return paginate(query, params)
