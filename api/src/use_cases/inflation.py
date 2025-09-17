@@ -11,7 +11,7 @@ class InflationUseCase:
     def __init__(self, db_session: Session):
         self.db_session = db_session
 
-    def get_paginated_inflation_data(
+    async def get_paginated_inflation_data(
         self,
         sort_order: Literal["asc", "desc"] = "desc",
     ) -> Query:
@@ -36,7 +36,7 @@ class InflationUseCase:
 
         return query
 
-    def get_inflation_data_by_exact_date(
+    async def get_inflation_data_by_exact_date(
         self,
         year: int,
         month: int
@@ -61,7 +61,7 @@ class InflationUseCase:
 
         return inflation
 
-    def get_inflation_data_by_date_range(
+    async def get_inflation_data_by_date_range(
         self,
         date_range: InflationDateRange,
         sort_order: Literal["asc", "desc"] = "asc",
