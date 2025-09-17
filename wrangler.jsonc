@@ -116,7 +116,7 @@
 					"binding": "BANREPCO_API_CACHE",
 					"id": "a88609982f8c431eac96556af9c8391d"
 				}
-			],
+			],"name": "banrepco-api",
 		}
 	},
 	/**
