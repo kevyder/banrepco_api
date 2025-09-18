@@ -47,7 +47,7 @@
 				"bindings": [
 					{
 						"class_name": "APIContainer",
-						"name": "API_CONTAINER"
+						"name": "API_CONTAINER",
 					}
 				]
 			},
@@ -77,7 +77,7 @@
 				"bindings": [
 					{
 						"class_name": "APIContainer",
-						"name": "API_CONTAINER_STG"
+						"name": "API_CONTAINER"
 					}
 				]
 			},
