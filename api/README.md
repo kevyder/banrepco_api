@@ -33,17 +33,22 @@ uvicorn main:app --port 3000
 
 The API will be available at http://localhost:3000
 
-## Docker Setup
+## Run with Docker compose
 
 1. Build the image
 ```bash
-docker build -t banrepco-api .
+docker-compose build
 ```
 
 2. Run the container
 ```bash
 # Using .env file
-docker run -p 3000:3000 --env-file .env banrepco-api
+docker-compose up
+```
+
+## Run Tests
+```bash
+docker-compose -f docker-compose.test.yml up --build
 ```
 
 ## API Documentation

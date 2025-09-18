@@ -38,7 +38,7 @@
 				{
 					"class_name": "APIContainer",
 					"image": "api/Dockerfile",
-					"max_instances": 3,
+					"max_instances": 10,
 					"instance_type": "standard",
 					"name": "banrepco-api-container-dev"
 				}

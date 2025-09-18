@@ -1,0 +1,10 @@
+services:
+
+  api-test:
+    build:
+      context: ./
+      dockerfile: Dockerfile.test
+    volumes:
+      - ./:/api
+    command: >
+      bash -c "python -m pytest -v --disable-warnings"
