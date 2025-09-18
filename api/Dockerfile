@@ -6,13 +6,16 @@ WORKDIR /app
 # Create a non-root user
 RUN useradd -m -u 1000 appuser
 
-# Copy dependency files
-COPY pyproject.toml uv.lock ./
-
-# Create and activate virtual environment, install dependencies
+# Install Poetry
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir uv==0.8.17 && \
-    uv pip install --system --no-cache-dir -r pyproject.toml
+    pip install --no-cache-dir poetry==2.2.0
+
+# Copy dependency files
+COPY pyproject.toml ./
+
+# Install dependencies
+RUN poetry config virtualenvs.create false && \
+    poetry install --no-interaction --no-ansi --no-root
 
 # Copy application code
 COPY . /app/

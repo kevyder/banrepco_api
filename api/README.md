@@ -17,8 +17,8 @@ cp .env.template .env
 
 2. Install dependencies
 ```bash
-pip install uv
-uv pip install -r pyproject.toml
+pip install poetry
+poetry install
 ```
 
 3. Run migrations

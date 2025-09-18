@@ -1,21 +1,21 @@
-[project]
+[tool.poetry]
 name = "banrepco-api"
 version = "0.1.0"
+package-mode = false
 description = "Useful catalog of APIs for the Bank of the Republic of Colombia"
+authors = ["Kevin Rodríguez <kyrodriguez97@gmail.com>"]
 readme = "README.md"
-requires-python = ">=3.13"
-authors = [
-    { name = "Kevin Rodríguez", email = "kyrodriguez97@gmail.com" }
-]
-dependencies = [
-    "alembic==1.16.5",
-    "fastapi-pagination==0.14.1",
-    "fastapi[standard]==0.116.1",
-    "sqlalchemy-libsql==0.2.0",
-    "uvicorn==0.35.0",
-]
 
-[dependency-groups]
-dev = [
-    "isort==6.0.1",
-]
+[tool.poetry.dependencies]
+python = ">=3.13,<3.14"
+alembic = "1.16.5"
+fastapi-pagination = "0.14.1"
+fastapi = {extras = ["standard"], version = "0.116.1"}
+sqlalchemy-libsql = "0.2.0"
+uvicorn = "0.35.0"
+
+[tool.poetry.group.dev.dependencies]
+isort = "6.0.1"
+
+[tool.poetry.group.test.dependencies]
+pytest = "8.4.2"
