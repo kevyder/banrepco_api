@@ -1,7 +1,7 @@
 import csv
 from datetime import datetime
 
-from src.db.session import db
+from src.db.session import database_session
 from src.models.inflation import Inflation
 
 
@@ -23,7 +23,7 @@ def populate_inflation_data():
     csv_file_path = "assets/inflation.csv"
 
     # Get a database session
-    session = db.session_local()
+    session = database_session.session_local()
 
     try:
         # Read the CSV file

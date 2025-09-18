@@ -34,4 +34,4 @@ class DatabaseSession:
 
 
 # Create a single instance to be used throughout the application
-db = DatabaseSession()
+database_session = DatabaseSession()
