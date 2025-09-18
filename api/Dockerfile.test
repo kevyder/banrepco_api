@@ -15,13 +15,10 @@ COPY pyproject.toml ./
 
 # Install dependencies
 RUN poetry config virtualenvs.create false && \
-    poetry install --no-interaction --no-ansi --no-root
+    poetry install --without dev
 
 # Copy application code
 COPY . /api/
-
-# Make the startup script executable
-RUN chmod +x /api/scripts/start.sh
 
 # Change ownership of the app directory to appuser
 RUN chown -R appuser:appuser /api
@@ -33,4 +30,4 @@ USER appuser
 EXPOSE 3000
 
 # Command to run migrations and start the application
-CMD ["/api/scripts/start.sh"]
+CMD ["poetry", "run", "pytest", "-v", "--disable-warnings"]

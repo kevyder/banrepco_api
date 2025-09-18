@@ -2,6 +2,7 @@ import os
 
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
+from src.config.enums import Environment
 
 load_dotenv()
 
@@ -23,15 +24,22 @@ def get_connect_args() -> dict:
     if not auth_token:
         raise ValueError("DATABASE_AUTH_TOKEN is required.")
 
-    return {"auth_token": auth_token}
+    return {
+        "auth_token": auth_token,
+        "check_same_thread": True,
+    }
 
 
 def create_sync_engine():
     """Create a synchronous SQLAlchemy engine."""
-    return create_engine(
-        url=get_database_url(),
-        connect_args=get_connect_args(),
-    )
+
+    environment = os.environ.get("ENVIRONMENT")
+
+    if environment != Environment.TESTING.value:
+        return create_engine(
+            url=get_database_url(),
+            connect_args=get_connect_args(),
+        )
 
 
 db_engine = create_sync_engine()

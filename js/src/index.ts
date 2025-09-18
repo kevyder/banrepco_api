@@ -1,8 +1,12 @@
 import { env } from "cloudflare:workers";
 import { Container, getRandom } from "@cloudflare/containers";
 
+export interface Env {
+  BANREPCO_API_CACHE: KVNamespace;
+}
 
 const INSTANCE_COUNT = 3;
+const CACHE_EXPIRATION_TTL = parseInt(env.CACHE_EXPIRATION_TTL || "60"); // Default to 1 hour
 
 export class APIContainer extends Container {
   defaultPort = 3000;
@@ -30,9 +34,19 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname.startsWith("/v1")) {
-      // note: "getRandom" to be replaced with latency-aware routing in the near future
-      const containerInstance = await getRandom(env.API_CONTAINER, INSTANCE_COUNT);
-      return containerInstance.fetch(request);
+      // Check cache first
+      let cacheData = await env.BANREPCO_API_CACHE.get(url, { type: "json" });
+      if (!cacheData) {
+        const containerInstance = await getRandom(env.API_CONTAINER, INSTANCE_COUNT);
+        const response = await containerInstance.fetch(request);
+        const responseData = await response.clone().text();
+        await env.BANREPCO_API_CACHE.put(url, responseData, { expirationTtl: CACHE_EXPIRATION_TTL });
+        return response;
+      } else {
+        return new Response(JSON.stringify(cacheData), {
+          headers: { "Content-Type": "application/json" },
+        });
+      }
     }
 
     return new Response("Not found", { status: 404 });

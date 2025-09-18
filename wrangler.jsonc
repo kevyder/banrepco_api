@@ -29,10 +29,40 @@
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
 	 */
 	"env": {
+		"development": { // Only for local development environment
+			"vars": {
+				"ENVIRONMENT": "development",
+				"CACHE_EXPIRATION_TTL": "60" // Cache TTL in seconds for development
+			},
+			"containers": [
+				{
+					"class_name": "APIContainer",
+					"image": "api/Dockerfile",
+					"max_instances": 10,
+					"instance_type": "standard",
+					"name": "banrepco-api-container-dev"
+				}
+			],
+			"durable_objects": {
+				"bindings": [
+					{
+						"class_name": "APIContainer",
+						"name": "API_CONTAINER"
+					}
+				]
+			},
+			"kv_namespaces": [
+				{
+					"binding": "BANREPCO_API_CACHE",
+					"id": "fakeidforlocaldevelopment" // Fake ID for local development
+				}
+			],
+		},
 		"staging": {
 			"route": "banrepco.stg.kevyder.dev/*",
 			"vars": {
-				"ENVIRONMENT": "staging"
+				"ENVIRONMENT": "staging",
+				"CACHE_EXPIRATION_TTL": "3600" // Cache TTL in seconds for staging
 			},
 			"containers": [
 				{
@@ -50,12 +80,19 @@
 						"name": "API_CONTAINER_STG"
 					}
 				]
-			}
+			},
+			"kv_namespaces": [
+				{
+					"binding": "BANREPCO_API_CACHE",
+					"id": "def669c8af754601a1b5616fd9343c73"
+				}
+			]
 		},
 		"production": {
 			"route": "banrepco.kevyder.dev/*",
 			"vars": {
-				"ENVIRONMENT": "production"
+				"ENVIRONMENT": "production",
+				"CACHE_EXPIRATION_TTL": "3600", // Cache TTL in seconds for production
 			},
 			"containers": [
 				{
@@ -73,7 +110,13 @@
 						"name": "API_CONTAINER"
 					}
 				]
-			}
+			},
+			"kv_namespaces": [
+				{
+					"binding": "BANREPCO_API_CACHE",
+					"id": "a88609982f8c431eac96556af9c8391d"
+				}
+			],
 		}
 	},
 	/**
@@ -97,5 +140,5 @@
 			],
 			"tag": "v2"
 		}
-	]
+	],
 }

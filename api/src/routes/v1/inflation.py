@@ -5,7 +5,7 @@ from fastapi_pagination import Page
 from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.orm import Session
 
-from src.db.session import db
+from src.db.session import database_session
 from src.schemas.inflation import InflationData, InflationDateRange, InflationPaginateParams
 from src.use_cases.inflation import InflationUseCase
 
@@ -19,7 +19,7 @@ async def get_inflation_data(
         description="Sort order by year and month"
     ),
     params: InflationPaginateParams = Depends(),
-    db_session: Session = Depends(db.get_db)
+    db_session: Session = Depends(database_session.get_db)
 ) -> Page[InflationData]:
     """
     Retrieve inflation data with pagination, sorting, and date range filtering.
@@ -34,7 +34,7 @@ async def get_inflation_data(
     """
 
     use_case = InflationUseCase(db_session)
-    query = use_case.get_paginated_inflation_data(
+    query = await use_case.get_paginated_inflation_data(
         sort_order=sort,
     )
     return paginate(query, params)
@@ -44,7 +44,7 @@ async def get_inflation_data(
 async def get_inflation_data_by_date(
     year: int,
     month: int,
-    db_session: Session = Depends(db.get_db)
+    db_session: Session = Depends(database_session.get_db)
 ) -> InflationData:
     """
     Retrieve a specific inflation record by year and month.
@@ -61,7 +61,7 @@ async def get_inflation_data_by_date(
         HTTPException: If no record is found for the specified date
     """
     use_case = InflationUseCase(db_session)
-    result = use_case.get_inflation_data_by_exact_date(year=year, month=month)
+    result = await use_case.get_inflation_data_by_exact_date(year=year, month=month)
 
     if result is None:
         raise HTTPException(
@@ -80,7 +80,7 @@ async def get_inflation_data_by_date_range(
         default="asc",
         description="Sort order by year and month"
     ),
-    db_session: Session = Depends(db.get_db)
+    db_session: Session = Depends(database_session.get_db)
 ) -> Page[InflationData]:
     """
     Retrieve inflation data filtered by date range without pagination.
@@ -95,7 +95,7 @@ async def get_inflation_data_by_date_range(
         List of inflation data records within the specified date range
     """
     use_case = InflationUseCase(db_session)
-    query = use_case.get_inflation_data_by_date_range(
+    query = await use_case.get_inflation_data_by_date_range(
         date_range=date_range,
         sort_order=sort
     )
