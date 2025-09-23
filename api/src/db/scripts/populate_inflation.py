@@ -37,13 +37,13 @@ def populate_inflation_data():
 
                 # Convert target and inflation rate to float, handle empty values
                 target = float(row["target"]) if row["target"] else None
-                inflation_rate = float(row["inflation rate"]) if row["inflation rate"] else None
+                annual_inflation_rate = float(row["inflation rate"]) if row["inflation rate"] else None
 
                 # Create new Inflation record
                 inflation_record = Inflation(
                     year=year,
                     month=month,
-                    inflation_rate=inflation_rate,
+                    annual_inflation_rate=annual_inflation_rate,
                     target=target
                 )
 

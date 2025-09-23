@@ -9,7 +9,7 @@ class InflationData(BaseModel):
     id: UUID
     year: int
     month: int
-    inflation_rate: float
+    annual_inflation_rate: float
     target: float | None
 
     class Config:

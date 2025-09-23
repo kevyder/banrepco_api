@@ -11,5 +11,5 @@ class Inflation(Base):
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     year = Column(Integer, nullable=False)
     month = Column(Integer, nullable=False)
-    inflation_rate = Column(Float, nullable=False)
+    annual_inflation_rate = Column(Float, nullable=False)
     target = Column(Float, nullable=True)

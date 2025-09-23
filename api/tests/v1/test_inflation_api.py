@@ -9,11 +9,11 @@ from src.models.inflation import Inflation
 def sample_inflation_data(db_session_test: Session):
     """Create sample inflation data for testing."""
     data = [
-        Inflation(year=2023, month=1, inflation_rate=13.25, target=3.0),
-        Inflation(year=2023, month=2, inflation_rate=13.28, target=3.0),
-        Inflation(year=2023, month=3, inflation_rate=13.34, target=3.0),
-        Inflation(year=2024, month=1, inflation_rate=9.25, target=3.0),
-        Inflation(year=2024, month=2, inflation_rate=8.75, target=3.0),
+        Inflation(year=2023, month=1, annual_inflation_rate=13.25, target=3.0),
+        Inflation(year=2023, month=2, annual_inflation_rate=13.28, target=3.0),
+        Inflation(year=2023, month=3, annual_inflation_rate=13.34, target=3.0),
+        Inflation(year=2024, month=1, annual_inflation_rate=9.25, target=3.0),
+        Inflation(year=2024, month=2, annual_inflation_rate=8.75, target=3.0),
     ]
 
     for item in data:
@@ -71,7 +71,7 @@ def test_get_inflation_by_specific_date(client: TestClient, sample_inflation_dat
     data = response.json()
     assert data["year"] == 2023
     assert data["month"] == 1
-    assert data["inflation_rate"] == 13.25
+    assert data["annual_inflation_rate"] == 13.25
     assert data["target"] == 3.0
 
 
