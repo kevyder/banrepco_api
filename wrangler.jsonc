@@ -59,7 +59,6 @@
 			],
 		},
 		"staging": {
-			"route": "banrepco.stg.kevyder.dev/*",
 			"vars": {
 				"ENVIRONMENT": "staging",
 				"CACHE_EXPIRATION_TTL": "3600" // Cache TTL in seconds for staging
@@ -89,7 +88,6 @@
 			]
 		},
 		"production": {
-			"route": "banrepco.kevyder.dev/*",
 			"vars": {
 				"ENVIRONMENT": "production",
 				"CACHE_EXPIRATION_TTL": "3600", // Cache TTL in seconds for production
