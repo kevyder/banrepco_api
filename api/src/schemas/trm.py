@@ -2,7 +2,7 @@ from datetime import date
 
 from fastapi import Query
 from fastapi_pagination import Params
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class TRMData(BaseModel):
@@ -20,6 +20,13 @@ class TRMByDate(BaseModel):
 class TRMByDateRange(BaseModel):
     start_date: date = Field(..., description="Start date for the range")
     end_date: date = Field(..., description="End date for the range")
+
+    @field_validator('end_date')
+    @classmethod
+    def validate_end_date_after_start(cls, v: date, values) -> date:
+        if v < values.data['start_date']:
+            raise ValueError("End date cannot be before start date.")
+        return v
 
 
 class TRMPaginateParams(Params):
