@@ -9,15 +9,18 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.13,<3.14"
 alembic = "1.16.5"
-fastapi-pagination = "0.14.1"
-fastapi = {extras = ["standard"], version = "0.116.1"}
+fastapi-pagination = "0.14.2"
+fastapi = {extras = ["standard"], version = "0.118.0"}
 sqlalchemy-libsql = "0.2.0"
-uvicorn = "0.35.0"
+uvicorn = "0.37.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "8.4.2"
+pytest-env = "1.1.5"
+pytest-cov = "7.0.0"
 
 [tool.poetry.group.dev.dependencies]
+pre-commit = "4.3.0"
 isort = "6.0.1"
-
-[tool.poetry.group.testing.dependencies]
-pytest-env = "1.1.5"
-pytest = "8.4.2"
-
+black = "25.9.0"
+flake8 = "7.3.0"

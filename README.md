@@ -1,12 +1,14 @@
 # BanRepCo API
 
-A FastAPI-based API that provides access to Bank of the Republic of Colombia (BanRep) data, starting with inflation rates.
+A FastAPI-based API that provides access to Bank of the Republic of Colombia (BanRep) data, inflation rates and TRM (Representative Market Rate) exchange rate data.
 
 ## Features
 
 - Historical inflation rates data
-- Filter by date ranges
-- Get specific inflation records by date
+- TRM (Representative Market Rate) exchange rate data
+- Filter data by date ranges
+- Get specific records by date
+- Real-time TRM data updates from Banco de la República
 - SQLite database with Turso integration
 - Containerized deployment on Cloudflare
 
@@ -66,9 +68,15 @@ Once the server is running, you can access:
 
 ### Available Endpoints
 
+#### Inflation Endpoints
 - `GET v1/inflation`: Get paginated inflation data
 - `GET v1/inflation/date-range`: Get inflation data by date range
 - `GET v1/inflation/{year}/{month}`: Get specific inflation record
+
+#### TRM (Exchange Rate) Endpoints
+- `GET v1/trm`: Get paginated TRM data with optional sorting
+- `GET v1/trm/by-date-range`: Get TRM data within a specified date range
+- `GET v1/trm/by-date`: Get TRM data for a specific date
 
 ## Contributing
 

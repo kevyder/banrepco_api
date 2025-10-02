@@ -5,16 +5,18 @@
 	"scripts": {
 		"deploy": "wrangler deploy -e=production",
 		"deploy:staging": "wrangler deploy -e=staging",
-		"dev": "wrangler dev -e=development",
-		"start": "wrangler dev -e=development",
+		"dev": "wrangler dev -e=development --test-scheduled",
+		"start": "wrangler dev -e=development --test-scheduled",
 		"cf-typegen": "wrangler types"
 	},
 	"devDependencies": {
 		"@types/node": "24.5.1",
 		"typescript": "5.9.2",
-		"wrangler": "4.37.1"
+		"wrangler": "4.41.0"
 	},
 	"dependencies": {
-		"@cloudflare/containers": "0.0.28"
+		"@cloudflare/containers": "0.0.28",
+		"@libsql/client": "0.15.15",
+		"fast-xml-parser": "5.2.5"
 	}
 }

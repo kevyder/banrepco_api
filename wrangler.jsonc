@@ -13,6 +13,11 @@
 	"observability": {
 		"enabled": true
 	},
+	"triggers": {
+    "crons": [
+      "0 5 * * *"
+    ]
+  },
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
@@ -32,14 +37,15 @@
 		"development": { // Only for local development environment
 			"vars": {
 				"ENVIRONMENT": "development",
-				"CACHE_EXPIRATION_TTL": "60" // Cache TTL in seconds for development
+				"CACHE_EXPIRATION_TTL": "60", // Cache TTL in seconds for development
+				"BANREP_WEB_SERVICE_URL": "https://totoro.banrep.gov.co/nsi-jax-ws/rest/data",
 			},
 			"containers": [
 				{
 					"class_name": "APIContainer",
 					"image": "api/Dockerfile",
 					"max_instances": 10,
-					"instance_type": "standard",
+					"instance_type": "basic",
 					"name": "banrepco-api-container-dev"
 				}
 			],
@@ -61,14 +67,15 @@
 		"staging": {
 			"vars": {
 				"ENVIRONMENT": "staging",
-				"CACHE_EXPIRATION_TTL": "3600" // Cache TTL in seconds for staging
+				"CACHE_EXPIRATION_TTL": "3600", // Cache TTL in seconds for staging
+				"BANREP_WEB_SERVICE_URL": "https://totoro.banrep.gov.co/nsi-jax-ws/rest/data",
 			},
 			"containers": [
 				{
 					"class_name": "APIContainer",
 					"image": "api/Dockerfile",
-					"max_instances": 2,
-					"instance_type": "dev",
+					"max_instances": 3,
+					"instance_type": "basic",
 					"name": "banrepco-api-container-stg"
 				}
 			],
@@ -91,13 +98,14 @@
 			"vars": {
 				"ENVIRONMENT": "production",
 				"CACHE_EXPIRATION_TTL": "3600", // Cache TTL in seconds for production
+				"BANREP_WEB_SERVICE_URL": "https://totoro.banrep.gov.co/nsi-jax-ws/rest/data",
 			},
 			"containers": [
 				{
 					"class_name": "APIContainer",
 					"image": "api/Dockerfile",
-					"max_instances": 3,
-					"instance_type": "dev",
+					"max_instances": 5,
+					"instance_type": "basic",
 					"name": "banrepco-api-container"
 				}
 			],
