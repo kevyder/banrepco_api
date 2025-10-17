@@ -1,6 +1,6 @@
 services:
 
-  api:
+  banrepco-api:
     build:
       context: ./
       dockerfile: Dockerfile

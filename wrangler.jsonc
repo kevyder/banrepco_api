@@ -95,6 +95,7 @@
 			]
 		},
 		"production": {
+			"name": "banrepco-api",
 			"vars": {
 				"ENVIRONMENT": "production",
 				"CACHE_EXPIRATION_TTL": "3600", // Cache TTL in seconds for production

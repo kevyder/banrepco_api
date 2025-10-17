@@ -1,4 +1,7 @@
-FROM python:3.13-slim
+FROM python:3.13.9-slim
+
+ENV UV_VERSION=0.9.3
+ENV UV_PROJECT_ENVIRONMENT="/usr/local/"
 
 # Set working directory
 WORKDIR /api
@@ -8,14 +11,13 @@ RUN useradd -m -u 1000 appuser
 
 # Install Poetry
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir poetry==2.2.0
+    pip install --no-cache-dir uv==$UV_VERSION
 
 # Copy dependency files
-COPY pyproject.toml ./
+COPY pyproject.toml uv.lock ./
 
 # Install dependencies
-RUN poetry config virtualenvs.create false && \
-    poetry install --no-interaction --no-ansi --no-root
+RUN uv sync
 
 # Copy application code
 COPY . /api/
