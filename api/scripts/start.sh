@@ -7,4 +7,4 @@ alembic upgrade head
 
 # Start the application
 echo "Starting the application..."
-exec uvicorn main:app --host 0.0.0.0 --port 3000
+exec uvicorn src.main:app --host 0.0.0.0 --port 3000

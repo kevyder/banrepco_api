@@ -1,10 +1,12 @@
 services:
-
-  api-test:
+  banrepco-api-test:
     build:
       context: ./
-      dockerfile: Dockerfile.test
+      dockerfile: Dockerfile
+    container_name: banrepco_api_test
     volumes:
       - ./:/api
+    working_dir: /api
     command: >
-      bash -c "python -m pytest -v --disable-warnings"
+      bash -c "uv sync --group test -qq
+      && uv run pytest --maxfail=1 --disable-warnings -v"

@@ -45,7 +45,7 @@
 					"class_name": "APIContainer",
 					"image": "api/Dockerfile",
 					"max_instances": 10,
-					"instance_type": "basic",
+					"instance_type": "lite",
 					"name": "banrepco-api-container-dev"
 				}
 			],
@@ -74,8 +74,8 @@
 				{
 					"class_name": "APIContainer",
 					"image": "api/Dockerfile",
-					"max_instances": 3,
-					"instance_type": "basic",
+					"max_instances": 10,
+					"instance_type": "lite",
 					"name": "banrepco-api-container-stg"
 				}
 			],
@@ -95,6 +95,7 @@
 			]
 		},
 		"production": {
+			"name": "banrepco-api",
 			"vars": {
 				"ENVIRONMENT": "production",
 				"CACHE_EXPIRATION_TTL": "3600", // Cache TTL in seconds for production
@@ -104,8 +105,8 @@
 				{
 					"class_name": "APIContainer",
 					"image": "api/Dockerfile",
-					"max_instances": 5,
-					"instance_type": "basic",
+					"max_instances": 10,
+					"instance_type": "lite",
 					"name": "banrepco-api-container"
 				}
 			],

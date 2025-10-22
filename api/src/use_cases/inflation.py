@@ -2,7 +2,6 @@ from typing import Literal
 
 from sqlalchemy import asc, desc
 from sqlalchemy.orm import Query, Session
-
 from src.models.inflation import Inflation
 from src.schemas.inflation import InflationData, InflationDateRange
 
@@ -27,6 +26,12 @@ class InflationUseCase:
             SQLAlchemy Query object ready for pagination
         """
         query = self.db_session.query(Inflation)
+        query = query.with_entities(
+            Inflation.year,
+            Inflation.month,
+            Inflation.annual_inflation_rate,
+            Inflation.target,
+        )
 
         # Apply sorting
         if sort_order == "desc":
@@ -52,7 +57,16 @@ class InflationUseCase:
             The inflation record if found, None otherwise
         """
 
-        record = self.db_session.query(Inflation).filter(
+        query = self.db_session.query(Inflation)
+
+        query = query.with_entities(
+            Inflation.year,
+            Inflation.month,
+            Inflation.annual_inflation_rate,
+            Inflation.target,
+        )
+
+        record = query.filter(
             Inflation.year == year,
             Inflation.month == month
         ).first()
@@ -77,6 +91,13 @@ class InflationUseCase:
             List of inflation data records within the specified date range
         """
         query = self.db_session.query(Inflation)
+
+        query = query.with_entities(
+            Inflation.year,
+            Inflation.month,
+            Inflation.annual_inflation_rate,
+            Inflation.target,
+        )
 
         # Apply date range filter
         query = query.filter(
