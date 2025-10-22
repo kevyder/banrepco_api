@@ -10,4 +10,6 @@ services:
       - ./:/api
     env_file:
       - .env
-    command: fastapi dev main.py --host 0.0.0.0 --port 3000 --reload
+    command: >
+      bash -c "alembic upgrade head
+      && fastapi dev src/main.py --host 0.0.0.0 --port 3000 --reload"

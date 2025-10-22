@@ -1,12 +1,10 @@
-from uuid import UUID
 
 from fastapi import Query
-from pydantic import BaseModel, Field
 from fastapi_pagination import Params
+from pydantic import BaseModel, Field
 
 
 class InflationData(BaseModel):
-    id: UUID
     year: int
     month: int
     annual_inflation_rate: float
