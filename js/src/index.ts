@@ -7,13 +7,14 @@ export interface Env {
   BANREPCO_API_CACHE: KVNamespace;
   API_CONTAINER: DurableObjectNamespace<Container>;
   BANREP_WEB_SERVICE_URL: string;
+  INSTANCE_COUNT?: string;
   CACHE_EXPIRATION_TTL?: string;
   ENVIRONMENT?: string;
   DATABASE_URL: string;
   DATABASE_AUTH_TOKEN: string;
 }
 
-const INSTANCE_COUNT = 3;
+const INSTANCE_COUNT = parseInt(env.INSTANCE_COUNT || "10");
 const CACHE_EXPIRATION_TTL = parseInt(env.CACHE_EXPIRATION_TTL || "60"); // Default to 1 hour
 
 export class APIContainer extends Container {
