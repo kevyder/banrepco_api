@@ -1,12 +1,12 @@
-FROM python:3.13.9-slim
+FROM python:3.13.10-slim
 
-ENV UV_VERSION=0.9.3
+ENV UV_VERSION=0.9.15
 ENV UV_PROJECT_ENVIRONMENT="/usr/local/"
 
 # Set working directory
 WORKDIR /api
 
-# Install Poetry
+# Install UV
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir uv==$UV_VERSION
 
@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY pyproject.toml uv.lock ./
 
 # Install dependencies
-RUN uv sync
+RUN uv sync --no-dev
 
 # Copy application code
 COPY . /api/
