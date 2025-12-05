@@ -12,7 +12,7 @@
 	"devDependencies": {
 		"@types/node": "24.10.1",
 		"typescript": "5.9.3",
-		"wrangler": "4.47.0"
+		"wrangler": "4.53.0"
 	},
 	"dependencies": {
 		"@cloudflare/containers": "0.0.30",
