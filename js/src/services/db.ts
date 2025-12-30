@@ -50,4 +50,39 @@ export class DbService {
       throw error;
     }
   }
+
+  async getExistingInflation(year: number, month: number): Promise<boolean> {
+    try {
+      const result = await this.client.execute({
+        sql: 'SELECT COUNT(*) as count FROM inflation WHERE year = ? AND month = ?',
+        args: [year, month]
+      });
+
+      return (result.rows[0].count as number) > 0;
+    } catch (error) {
+      console.error('Error checking TRM existence:', error);
+      throw error;
+    }
+  }
+
+  async insertInflation(year: number, month: number, value: number, target: number): Promise<void> {
+    try {
+      const exists = await this.getExistingInflation(year, month);
+
+      if (exists) {
+        console.log('Inflation record already exists for this month');
+        return;
+      }
+
+      const id = crypto.randomUUID();
+
+      await this.client.execute({
+        sql: 'INSERT INTO inflation (id, year, month, annual_inflation_rate, target) VALUES (?, ?, ?, ?, ?)',
+        args: [id, year, month, value, target]
+      });
+    } catch (error) {
+      console.error('Error inserting inflation value:', error);
+      throw error;
+    }
+  }
 }

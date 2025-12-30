@@ -15,7 +15,8 @@
 	},
 	"triggers": {
     "crons": [
-      "0 5 * * *"
+      "0 5 * * *",
+			"0 5 15 * *"
     ]
   },
 	/**
@@ -39,7 +40,7 @@
 				"ENVIRONMENT": "development",
 				"CACHE_EXPIRATION_TTL": "60", // Cache TTL in seconds for development
 				"BANREP_WEB_SERVICE_URL": "https://totoro.banrep.gov.co/nsi-jax-ws/rest/data",
-				"INSTANCE_COUNT": 10,
+				"INFLATION_WEB_SERVICE_URL": "https://suameca.banrep.gov.co/estadisticas-economicas-back/rest/estadisticaEconomicaRestService/consultaMenuXId?idMenu=100001",
 			},
 			"containers": [
 				{
@@ -70,13 +71,13 @@
 				"ENVIRONMENT": "staging",
 				"CACHE_EXPIRATION_TTL": "3600", // Cache TTL in seconds for staging
 				"BANREP_WEB_SERVICE_URL": "https://totoro.banrep.gov.co/nsi-jax-ws/rest/data",
-				"INSTANCE_COUNT": 10,
+				"INFLATION_WEB_SERVICE_URL": "https://suameca.banrep.gov.co/estadisticas-economicas-back/rest/estadisticaEconomicaRestService/consultaMenuXId?idMenu=100001",
 			},
 			"containers": [
 				{
 					"class_name": "APIContainer",
 					"image": "api/Dockerfile",
-					"max_instances": 10,
+					"max_instances": 1,
 					"instance_type": "lite",
 					"name": "banrepco-api-container-stg"
 				}
@@ -102,14 +103,14 @@
 				"ENVIRONMENT": "production",
 				"CACHE_EXPIRATION_TTL": "3600", // Cache TTL in seconds for production
 				"BANREP_WEB_SERVICE_URL": "https://totoro.banrep.gov.co/nsi-jax-ws/rest/data",
-				"INSTANCE_COUNT": 10,
+				"INFLATION_WEB_SERVICE_URL": "https://suameca.banrep.gov.co/estadisticas-economicas-back/rest/estadisticaEconomicaRestService/consultaMenuXId?idMenu=100001",
 			},
 			"containers": [
 				{
 					"class_name": "APIContainer",
 					"image": "api/Dockerfile",
-					"max_instances": 10,
-					"instance_type": "lite",
+					"max_instances": 1,
+					"instance_type": "basic",
 					"name": "banrepco-api-container"
 				}
 			],
