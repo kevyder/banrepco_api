@@ -77,7 +77,7 @@
 				{
 					"class_name": "APIContainer",
 					"image": "api/Dockerfile",
-					"max_instances": 10,
+					"max_instances": 1,
 					"instance_type": "lite",
 					"name": "banrepco-api-container-stg"
 				}
@@ -109,8 +109,8 @@
 				{
 					"class_name": "APIContainer",
 					"image": "api/Dockerfile",
-					"max_instances": 10,
-					"instance_type": "lite",
+					"max_instances": 1,
+					"instance_type": "basic",
 					"name": "banrepco-api-container"
 				}
 			],
