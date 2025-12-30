@@ -64,8 +64,7 @@ export default {
       // Check cache first
       let cacheData = await env.BANREPCO_API_CACHE.get(cacheKey, { type: "json" });
       if (!cacheData) {
-        const { "session-id": sessionId } = await request.json();
-        const containerInstance = getContainer(env.MY_CONTAINER, sessionId);
+        const containerInstance = getContainer(env.API_CONTAINER);
         const response = await containerInstance.fetch(request);
         const responseData = await response.clone().text();
         await env.BANREPCO_API_CACHE.put(cacheKey, responseData, { expirationTtl: CACHE_EXPIRATION_TTL });
