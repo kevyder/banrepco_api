@@ -74,7 +74,9 @@
 	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
 	"migrations": [
 		{
-			"new_sqlite_classes": [],
+			"deleted_classes": [
+				"APIContainer"
+			],
 			"tag": "v2"
 		}
 	],
