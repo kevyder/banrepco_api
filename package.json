@@ -15,7 +15,6 @@
 		"wrangler": "4.54.0"
 	},
 	"dependencies": {
-		"@cloudflare/containers": "0.0.31",
 		"@libsql/client": "0.15.15",
 		"fast-xml-parser": "5.3.3"
 	}

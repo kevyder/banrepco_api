@@ -38,96 +38,24 @@
 		"development": { // Only for local development environment
 			"vars": {
 				"ENVIRONMENT": "development",
-				"CACHE_EXPIRATION_TTL": "60", // Cache TTL in seconds for development
 				"BANREP_WEB_SERVICE_URL": "https://totoro.banrep.gov.co/nsi-jax-ws/rest/data",
 				"INFLATION_WEB_SERVICE_URL": "https://suameca.banrep.gov.co/estadisticas-economicas-back/rest/estadisticaEconomicaRestService/consultaMenuXId?idMenu=100001",
 			},
-			"containers": [
-				{
-					"class_name": "APIContainer",
-					"image": "api/Dockerfile",
-					"max_instances": 10,
-					"instance_type": "lite",
-					"name": "banrepco-api-container-dev"
-				}
-			],
-			"durable_objects": {
-				"bindings": [
-					{
-						"class_name": "APIContainer",
-						"name": "API_CONTAINER",
-					}
-				]
-			},
-			"kv_namespaces": [
-				{
-					"binding": "BANREPCO_API_CACHE",
-					"id": "fakeidforlocaldevelopment" // Fake ID for local development
-				}
-			],
 		},
 		"staging": {
 			"vars": {
 				"ENVIRONMENT": "staging",
-				"CACHE_EXPIRATION_TTL": "3600", // Cache TTL in seconds for staging
 				"BANREP_WEB_SERVICE_URL": "https://totoro.banrep.gov.co/nsi-jax-ws/rest/data",
 				"INFLATION_WEB_SERVICE_URL": "https://suameca.banrep.gov.co/estadisticas-economicas-back/rest/estadisticaEconomicaRestService/consultaMenuXId?idMenu=100001",
 			},
-			"containers": [
-				{
-					"class_name": "APIContainer",
-					"image": "api/Dockerfile",
-					"max_instances": 1,
-					"instance_type": "lite",
-					"name": "banrepco-api-container-stg"
-				}
-			],
-			"durable_objects": {
-				"bindings": [
-					{
-						"class_name": "APIContainer",
-						"name": "API_CONTAINER"
-					}
-				]
-			},
-			"kv_namespaces": [
-				{
-					"binding": "BANREPCO_API_CACHE",
-					"id": "def669c8af754601a1b5616fd9343c73"
-				}
-			]
 		},
 		"production": {
 			"name": "banrepco-api",
 			"vars": {
 				"ENVIRONMENT": "production",
-				"CACHE_EXPIRATION_TTL": "3600", // Cache TTL in seconds for production
 				"BANREP_WEB_SERVICE_URL": "https://totoro.banrep.gov.co/nsi-jax-ws/rest/data",
 				"INFLATION_WEB_SERVICE_URL": "https://suameca.banrep.gov.co/estadisticas-economicas-back/rest/estadisticaEconomicaRestService/consultaMenuXId?idMenu=100001",
 			},
-			"containers": [
-				{
-					"class_name": "APIContainer",
-					"image": "api/Dockerfile",
-					"max_instances": 1,
-					"instance_type": "basic",
-					"name": "banrepco-api-container"
-				}
-			],
-			"durable_objects": {
-				"bindings": [
-					{
-						"class_name": "APIContainer",
-						"name": "API_CONTAINER"
-					}
-				]
-			},
-			"kv_namespaces": [
-				{
-					"binding": "BANREPCO_API_CACHE",
-					"id": "a88609982f8c431eac96556af9c8391d"
-				}
-			],
 		}
 	},
 	/**
@@ -146,9 +74,7 @@
 	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
 	"migrations": [
 		{
-			"new_sqlite_classes": [
-				"APIContainer"
-			],
+			"new_sqlite_classes": [],
 			"tag": "v2"
 		}
 	],
