@@ -1,5 +1,3 @@
-import { env } from "cloudflare:workers";
-import { Container, getContainer } from "@cloudflare/containers";
 import { getDailyTRM, getMonthlyInflation } from "./scheduledTask";
 
 
