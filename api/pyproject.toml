@@ -6,7 +6,7 @@ authors = [{ name = "Kevin Rodríguez", email = "kyrodriguez97@gmail.com" }]
 requires-python = ">=3.13,<3.15"
 readme = "README.md"
 dependencies = [
-    "alembic==1.17.0",
+    "alembic==1.17.2",
     "fastapi-pagination==0.15.4",
     "fastapi[standard]==0.119.0",
     "sqlalchemy-libsql==0.2.0",
