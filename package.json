@@ -15,7 +15,7 @@
 		"wrangler": "4.58.0"
 	},
 	"dependencies": {
-		"@libsql/client": "0.15.15",
+		"@libsql/client": "0.17.0",
 		"fast-xml-parser": "5.3.3"
 	}
 }
