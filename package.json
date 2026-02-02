@@ -16,6 +16,6 @@
 	},
 	"dependencies": {
 		"@libsql/client": "0.15.15",
-		"fast-xml-parser": "5.3.3"
+		"fast-xml-parser": "5.3.4"
 	}
 }
