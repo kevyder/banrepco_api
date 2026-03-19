@@ -10,12 +10,12 @@
 		"cf-typegen": "wrangler types"
 	},
 	"devDependencies": {
-		"@types/node": "25.0.3",
+		"@types/node": "25.5.0",
 		"typescript": "5.9.3",
-		"wrangler": "4.58.0"
+		"wrangler": "4.75.0"
 	},
 	"dependencies": {
-		"@libsql/client": "0.17.0",
-		"fast-xml-parser": "5.3.3"
+		"@libsql/client": "0.17.2",
+		"fast-xml-parser": "5.5.7"
 	}
 }
