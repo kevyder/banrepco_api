@@ -11,6 +11,7 @@ dependencies = [
     "fastapi[standard]==0.136.1",
     "sqlalchemy-libsql==0.2.0",
     "uvicorn==0.46.0",
+    "pydantic==2.13.3",
 ]
 
 [dependency-groups]
