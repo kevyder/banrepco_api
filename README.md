@@ -19,6 +19,8 @@ cp .env.template .env
 ```
 **Note:** The service will not start without valid values for these variables. See `.env.template` for required fields.
 
+- `BANREP_WEB_SERVICE_URL`: The root URL of the BanRep TRM SDMX web service (required for scheduled daily TRM jobs).
+
 ### 2. Dependency Installation
 
 **Canonical local (bare metal) install:**
@@ -78,6 +80,16 @@ alembic upgrade head
 # Always run from the repo root.
 ```
 
+### 8. Scheduled Jobs (TRM Daily Sync)
+The scheduler runs as a separate sidecar container alongside the API. It fetches the daily TRM from BanRep's SDMX API and stores it in the database via `TRMUseCase`.
+```bash
+docker compose up -d --build banrepco-scheduler
+```
+- Runs daily at **00:00** (midnight).
+- Singleton: file-based lock prevents multiple instances from running simultaneously.
+- Job logic lives in `src/jobs/tasks/get_daily_trm.py`.
+- Scheduler entrypoint: `scripts/start_scheduler.sh`.
+
 ---
 
 ## API Documentation
@@ -89,17 +101,18 @@ alembic upgrade head
 
 ## Quick Reference (Common Commands)
 
-| Task                   | Command                                                      |
-|------------------------|--------------------------------------------------------------|
-| Install deps (local)   | `pip install uv && uv sync --all`                            |
-| Install test deps      | `uv sync --group test`                                       |
-| Run migrations         | `alembic upgrade head`                                       |
-| Start server (local)   | `uvicorn src.main:app --host 0.0.0.0 --port 3000`           |
-| Start with script      | `./scripts/start.sh`                                         |
-| Build Dev container    | `docker-compose build`                                       |
-| Run Dev container      | `docker-compose up`                                          |
-| Run tests (container)  | `docker-compose -f docker-compose.test.yml up --build`       |
-| Run tests (local)      | `pytest`                                                     |
+| Task                        | Command                                                      |
+|-----------------------------|--------------------------------------------------------------|
+| Install deps (local)        | `pip install uv && uv sync --all`                            |
+| Install test deps           | `uv sync --group test`                                       |
+| Run migrations             | `alembic upgrade head`                                       |
+| Start server (local)        | `uvicorn src.main:app --host 0.0.0.0 --port 3000`           |
+| Start with script           | `./scripts/start.sh`                                         |
+| Build Dev container         | `docker compose build`                                       |
+| Run Dev container           | `docker compose up`                                          |
+| Run tests (container)        | `docker compose -f docker-compose.test.yml up --build`       |
+| Run tests (local)           | `pytest`                                                     |
+| Start scheduler (container) | `docker compose up -d --build banrepco-scheduler`           |
 
 ---
 
