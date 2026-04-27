@@ -25,10 +25,36 @@ test = [
 ]
 dev = [
     "pre-commit==4.6.0",
-    "isort==7.0.0",
-    "black==25.9.0",
-    "flake8==7.3.0",
+    "ruff==0.15.12",
 ]
 
 [tool.uv]
 package = false
+
+
+# Ruff configuration
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle
+    "F", # Pyflakes
+    "UP", # pyupgrade
+    "B", # flake8-bugbear
+    "SIM", # flake8-simplify
+    "I", # isort
+]
+ignore = ["E203", "E305"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
