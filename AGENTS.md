@@ -4,47 +4,54 @@ Only include repository-specific facts an agent would otherwise miss.
 
 - Python: this project requires Python 3.13+. Do not attempt to run with older interpreters.
 
-- Environment: copy .env.template -> .env and set DATABASE_URL and DATABASE_AUTH_TOKEN before running the app.
+- Environment: copy .env.template -> .env and set DATABASE_URL, DATABASE_AUTH_TOKEN, and BANREP_WEB_SERVICE_URL before running the app or scheduler.
 
 - Dependency managers (important):
-  - Local development documented for humans uses Poetry (README). Use: `pip install poetry` then `poetry install`.
-  - The Docker image and CI use the `uv` tool and the checked-in `uv.lock`. The Dockerfile runs `uv sync --no-dev` and docker-compose.test.yml runs `uv sync --group test`.
-  - Do not mix workflows carelessly: if you run `uv sync` you are using the uv lockfile; if you use Poetry you are using pyproject. Mixing can produce mismatched environments.
+  - All local, CI, and container workflows use **uv** and the checked-in `uv.lock`. The Dockerfile runs `uv sync --no-dev` and docker-compose.test.yml runs `uv sync --group test`.
+  - Do not use Poetry; mixing Poetry and uv will break environments.
 
-- Start / entrypoint facts (authoritative):
-  - Application ASGI app: `src.main:app` (use this module path). The repo contains a start script at `scripts/start.sh` which runs migrations then starts `uvicorn src.main:app --host 0.0.0.0 --port 3000`.
-  - README contains an outdated uvicorn example (`uvicorn main:app`). Prefer `src.main:app` (the code and start script are authoritative).
-  - Always run migrations before starting the server (the start script and docker compose do this): `alembic upgrade head` (run from the repo root so alembic.ini's prepend_sys_path = . works).
+- Application entrypoint (authoritative):
+  - ASGI app: `src.main:app` (use this module path). The start script at `scripts/start.sh` runs migrations then starts `uvicorn src.main:app --host 0.0.0.0 --port 3000`.
+  - Always run migrations before starting the server: `alembic upgrade head` (run from repo root so alembic.ini's prepend_sys_path = . works).
+
+- Scheduled jobs (src/jobs/):
+  - The scheduler runs as a separate sidecar process (banrepco-scheduler container) alongside the API.
+  - Singleton behavior: file-based lock at `/tmp/banrepco_scheduler.lock`. If another instance is running, the scheduler exits immediately.
+  - Job definition: `src/jobs/tasks/get_daily_trm.py` — `get_daily_trm()` fetches TRM from BanRep SDMX API, `insert_trm_into_db()` stores it via `TRMUseCase`, `get_daily_trm_job()` orchestrates both.
+  - Scheduler entrypoint: `scripts/start_scheduler.sh` → `python -m src.jobs.scheduler`.
+  - Runs daily at 00:00. Schedule is defined in `src/jobs/scheduler.py` via `schedule.every().day.at("00:00")`.
+  - WAF note: BanRep's service (`totoro.banrep.gov.co`) has a WAF that blocks requests without browser-like headers or JavaScript execution. See `src/jobs/tasks/get_daily_trm.py` for current header configuration.
 
 - Docker / compose
-  - Build+run dev container: `docker-compose build` then `docker-compose up`. docker-compose.yml overrides the service command to run migrations and then `fastapi dev src/main.py --reload` inside the container.
-  - Run tests in container (recommended for parity): `docker-compose -f docker-compose.test.yml up --build` (this uses `uv sync --group test` then runs pytest inside the container).
+  - Build+run dev container: `docker compose build` then `docker compose up`. Runs migrations then `fastapi dev src/main.py --reload` inside the container.
+  - Run tests in container (recommended for parity): `docker compose -f docker-compose.test.yml up --build`.
+  - Scheduler container: `docker compose up -d --build banrepco-scheduler`.
 
 - Tests (local and single-test examples)
   - pytest.ini sets environment vars for the test run (ENVIRONMENT=testing, DATABASE_URL=sqlite:///:memory:, DATABASE_AUTH_TOKEN=test_token). Running pytest picks those up automatically.
-  - To run the full suite locally (using Poetry's dependency-groups):
-    - `poetry install --with test` (or include `dev` if you want tooling) then `pytest`
-    - If you don't want to manage test deps locally, use the docker-compose.test.yml flow above.
+  - To run the full suite locally: `uv sync --group test` then `pytest`.
+  - If you do not want to manage test deps locally, use the docker-compose.test.yml flow.
   - Run a single test example: `pytest tests/v1/test_trm_api.py::test_get_trm_data`
 
 - Alembic / migrations
-  - Migration scripts live under `src/db` / `src/db/migrations` (alembic.ini script_location points there).
-  - Always run `alembic upgrade head` from the repository root (the env.py expects repo layout / sys.path as configured by alembic.ini).
+  - Migration scripts live under `src/db` / `src/db/migrations`.
+  - Always run `alembic upgrade head` from the repository root.
 
 - Important assertions / brittle tests to watch for
   - Several tests assert the package version (health endpoint) equals the version in pyproject (0.1.0). Changing pyproject.toml version will break tests unless tests are updated.
 
 - Formatting / linting
-  - Black, isort and flake8 are in the `dev` dependency-group in pyproject. Run them after installing dev deps (e.g. `poetry install --with dev`) or via docker if you prefer.
+  - Black, isort and flake8 are in the `dev` dependency-group in pyproject. Run after installing dev deps (`uv sync --group dev`) or via docker.
 
 - Files to check first when you start working
-  - README.md (local quickstart), scripts/start.sh (authoritative start), docker-compose*.yml, Dockerfile, pyproject.toml, uv.lock, alembic.ini, pytest.ini.
+  - README.md (local quickstart), scripts/start.sh (app entrypoint), scripts/start_scheduler.sh (scheduler entrypoint), docker-compose*.yml, Dockerfile, pyproject.toml, uv.lock, alembic.ini, pytest.ini.
 
 - Minimal checklist an agent should follow before running or editing runtime behavior
   1. Ensure Python 3.13+ is used.
- 2. Copy `.env.template` -> `.env` (or provide DATABASE_URL/DATABASE_AUTH_TOKEN via env) before starting the server.
- 3. Install dependencies consistently (Poetry for local dev, uv inside container).
- 4. Run migrations: `alembic upgrade head` from repo root.
- 5. Start server with: `uvicorn src.main:app --host 0.0.0.0 --port 3000` (or use scripts/start.sh / docker-compose to get the migration step included).
+  2. Copy `.env.template` -> `.env` and set DATABASE_URL, DATABASE_AUTH_TOKEN, and BANREP_WEB_SERVICE_URL.
+  3. Install dependencies: `uv sync`.
+  4. Run migrations: `alembic upgrade head` from repo root.
+  5. Start API server: `uvicorn src.main:app --host 0.0.0.0 --port 3000` (or use scripts/start.sh / docker compose).
+  6. Start scheduler (if needed): `docker compose up -d --build banrepco-scheduler`.
 
 If something is ambiguous (team conventions, release branching, or which tool to standardize on), ask a short question instead of guessing.
