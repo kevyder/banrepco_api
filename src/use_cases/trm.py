@@ -87,3 +87,19 @@ class TRMUseCase:
             query = query.order_by(TRM.date.desc())
 
         return query
+
+    async def insert_trm_data(self, trm_data: TRMData) -> None:
+        """
+        Insert a new TRM record into the database.
+
+        Args:
+            trm_data: The TRM data to insert
+        """
+
+        trm_existing_record = self.db_session.query(TRM).filter(TRM.date == trm_data.date).first()
+        if trm_existing_record:
+            return
+
+        new_trm_record = TRM(date=trm_data.date, value=trm_data.value)
+        self.db_session.add(new_trm_record)
+        self.db_session.commit()

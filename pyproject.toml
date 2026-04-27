@@ -12,6 +12,9 @@ dependencies = [
     "sqlalchemy-libsql==0.2.0",
     "uvicorn==0.46.0",
     "pydantic==2.13.3",
+    "schedule==1.2.2",
+    "requests==2.33.1",
+    "xmltodict==1.0.4",
 ]
 
 [dependency-groups]
