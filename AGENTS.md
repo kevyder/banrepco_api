@@ -41,7 +41,11 @@ Only include repository-specific facts an agent would otherwise miss.
   - Several tests assert the package version (health endpoint) equals the version in pyproject (0.1.0). Changing pyproject.toml version will break tests unless tests are updated.
 
 - Formatting / linting
-  - Black, isort and flake8 are in the `dev` dependency-group in pyproject. Run after installing dev deps (`uv sync --group dev`) or via docker.
+  - Ruff is used for both formatting and linting (replaced black, isort, flake8).
+  - Ruff is in the `dev` dependency-group: `uv sync --group dev`.
+  - Run linting: `ruff check .`
+  - Run formatting: `ruff format .`
+  - Pre-commit hooks also run ruff via `.pre-commit-config.yaml`.
 
 - Files to check first when you start working
   - README.md (local quickstart), scripts/start.sh (app entrypoint), scripts/start_scheduler.sh (scheduler entrypoint), docker-compose*.yml, Dockerfile, pyproject.toml, uv.lock, alembic.ini, pytest.ini.

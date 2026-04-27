@@ -80,7 +80,16 @@ alembic upgrade head
 # Always run from the repo root.
 ```
 
-### 8. Scheduled Jobs (TRM Daily Sync)
+### 8. Formatting and Linting
+Ruff is used for both formatting and linting (replaced black, isort, flake8).
+```bash
+uv sync --group dev
+ruff check .        # lint
+ruff format .       # format
+```
+Pre-commit hooks run ruff automatically — see `.pre-commit-config.yaml`.
+
+### 9. Scheduled Jobs (TRM Daily Sync)
 The scheduler runs as a separate sidecar container alongside the API. It fetches the daily TRM from BanRep's SDMX API and stores it in the database via `TRMUseCase`.
 ```bash
 docker compose up -d --build banrepco-scheduler
@@ -103,8 +112,10 @@ docker compose up -d --build banrepco-scheduler
 
 | Task                        | Command                                                      |
 |-----------------------------|--------------------------------------------------------------|
-| Install deps (local)        | `pip install uv && uv sync --all`                            |
-| Install test deps           | `uv sync --group test`                                       |
+| Install deps (local)        | `uv sync`                                                    |
+| Install dev deps            | `uv sync --group dev`                                        |
+| Run linting                 | `ruff check .`                                              |
+| Run formatting             | `ruff format .`                                              |
 | Run migrations             | `alembic upgrade head`                                       |
 | Start server (local)        | `uvicorn src.main:app --host 0.0.0.0 --port 3000`           |
 | Start with script           | `./scripts/start.sh`                                         |
