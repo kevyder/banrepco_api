@@ -1,62 +1,119 @@
 # BanRepCo API
 
-A FastAPI-based API that provides access to Bank of the Republic of Colombia (BanRep) data, starting with inflation rates.
+A FastAPI-based API enabling access to Bank of the Republic of Colombia (BanRep) data, such as inflation rates.
 
-## Requirements
+---
 
-- Python 3.13+
-- Docker (optional)
+## Quickstart: Local and Container Usage
 
-## Local Development Setup
+### Requirements
 
-1. Set up environment variables
+- Python **3.13+** (required for local development)
+- Docker (optional, for container-based dev/test)
+
+### 1. Environment Variables
+Copy and update your environment file:
 ```bash
 cp .env.template .env
-# Edit .env with your configuration
+# Edit the .env and set at least DATABASE_URL and DATABASE_AUTH_TOKEN
 ```
+**Note:** The service will not start without valid values for these variables. See `.env.template` for required fields.
 
-2. Install dependencies
+### 2. Dependency Installation
+
+**Canonical local (bare metal) install:**
 ```bash
-pip install poetry
-poetry install
+# Ensure uv is installed (see https://github.com/astral-sh/uv)
+pip install uv
+# Install runtime and dev dependencies as specified in uv.lock
+uv sync --all
 ```
+**IMPORTANT:**
+- Do **not** use Poetry for dependency management (even if present in some files/instructions). All official tooling, CI, and containers rely on **uv** and the checked-in `uv.lock`.
+- Mixing Poetry and uv commands or files will break environments.
 
-3. Run migrations
+### 3. Database Migrations
+Run migrations (always before starting the app):
 ```bash
 alembic upgrade head
 ```
 
-4. Start the server
-```bash
-uvicorn main:app --port 3000
-```
+### 4. Starting the Server
+- **Preferred local command:**
+  ```bash
+  uvicorn src.main:app --host 0.0.0.0 --port 3000
+  # or use scripts/start.sh (runs migrations then starts app):
+  ./scripts/start.sh
+  ```
+- App will be available at http://localhost:3000
 
-The API will be available at http://localhost:3000
-
-## Run with Docker compose
-
-1. Build the image
+### 5. Developing/Testing with Containers
+**Development:**
 ```bash
 docker-compose build
-```
-
-2. Run the container
-```bash
-# Using .env file
 docker-compose up
 ```
+- This runs migrations before starting FastAPI autoreload in `src/main.py` in dev mode inside the container.
 
-## Run Tests
+**Testing/CI:**
 ```bash
 docker-compose -f docker-compose.test.yml up --build
 ```
+- This installs test dependencies with `uv sync --group test` and runs pytest inside the container.
+
+### 6. Local Testing (Advanced)
+If you want to run tests locally:
+```bash
+uv sync --group test
+pytest
+```
+- `pytest.ini` will automatically set test db URL/token. To run a specific test:
+  ```bash
+  pytest tests/v1/test_trm_api.py::test_get_trm_data
+  ```
+
+### 7. Alembic Migrations (Repeat After Changes)
+```bash
+alembic upgrade head
+# Always run from the repo root.
+```
+
+---
 
 ## API Documentation
 
-Once the server is running, you can access:
-- API documentation: http://localhost:3000/docs
-- Alternative documentation: http://localhost:3000/redoc
+- Swagger/OpenAPI: http://localhost:3000/docs
+- ReDoc: http://localhost:3000/redoc
 
-## Environment Variables
+---
 
-Required environment variables are listed in `.env.template`. Copy this file to `.env` and update the values accordingly.
+## Quick Reference (Common Commands)
+
+| Task                   | Command                                                      |
+|------------------------|--------------------------------------------------------------|
+| Install deps (local)   | `pip install uv && uv sync --all`                            |
+| Install test deps      | `uv sync --group test`                                       |
+| Run migrations         | `alembic upgrade head`                                       |
+| Start server (local)   | `uvicorn src.main:app --host 0.0.0.0 --port 3000`           |
+| Start with script      | `./scripts/start.sh`                                         |
+| Build Dev container    | `docker-compose build`                                       |
+| Run Dev container      | `docker-compose up`                                          |
+| Run tests (container)  | `docker-compose -f docker-compose.test.yml up --build`       |
+| Run tests (local)      | `pytest`                                                     |
+
+---
+
+## Important Gotchas / Notes
+
+- **Python version:** 3.13+ is strictly required.
+- **Dependency management:** Use only uv+uv.lock for installation. Do not use Poetry, even if it's mentioned elsewhere.
+- **Mixing tools:** Never mix uv and Poetry commands or environments; you will break the local/CI contract.
+- **.env file:** The app will not start without proper environment variables set in `.env`.
+- **Migration command:** Always run `alembic upgrade head` from the repo root, before starting the app.
+- **Entrypoint:** The canonical ASGI app path is `src.main:app`, not `main:app`.
+- **Brittle test:** Some tests assert the version set in `pyproject.toml`. If you update the version, you **must** update the tests accordingly.
+
+---
+
+## Need More Details?
+- See `AGENTS.md` for high-signal internal agent/developer tips and advanced workflow specifics.
