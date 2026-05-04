@@ -7,6 +7,7 @@ from pathlib import Path
 import schedule
 
 from src.jobs.tasks.get_daily_trm import get_daily_trm_job
+from src.jobs.tasks.get_monthly_inflation import get_monthly_inflation_job
 
 logging.basicConfig(
     level=logging.INFO,
@@ -32,7 +33,10 @@ def release_lock() -> None:
 
 def register_jobs() -> None:
     schedule.every().day.at("00:00").do(get_daily_trm_job)
-    logger.info("Jobs registered — scheduled daily at 00:00")
+    logger.info("Daily TRM job registered — scheduled daily at 00:00")
+
+    schedule.every().friday.at("00:00").do(get_monthly_inflation_job)
+    logger.info("Monthly inflation job registered — scheduled every Friday at 00:00")
 
 
 def run_scheduler() -> None:

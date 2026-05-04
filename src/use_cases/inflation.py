@@ -42,11 +42,7 @@ class InflationUseCase:
 
         return query
 
-    async def get_inflation_data_by_exact_date(
-        self,
-        year: int,
-        month: int
-    ) -> InflationData | None:
+    async def get_inflation_data_by_exact_date(self, year: int, month: int) -> InflationData | None:
         """
         Get a specific inflation record by year and month.
 
@@ -67,10 +63,7 @@ class InflationUseCase:
             Inflation.target,
         )
 
-        record = query.filter(
-            Inflation.year == year,
-            Inflation.month == month
-        ).first()
+        record = query.filter(Inflation.year == year, Inflation.month == month).first()
 
         inflation = InflationData.model_validate(record) if record else None
 
@@ -102,11 +95,11 @@ class InflationUseCase:
 
         # Apply date range filter
         query = query.filter(
-            ((Inflation.year == date_range.start_year) & (Inflation.month >= date_range.start_month)) |
-            (Inflation.year > date_range.start_year)
+            ((Inflation.year == date_range.start_year) & (Inflation.month >= date_range.start_month))
+            | (Inflation.year > date_range.start_year)
         ).filter(
-            ((Inflation.year == date_range.end_year) & (Inflation.month <= date_range.end_month)) |
-            (Inflation.year < date_range.end_year)
+            ((Inflation.year == date_range.end_year) & (Inflation.month <= date_range.end_month))
+            | (Inflation.year < date_range.end_year)
         )
 
         # Apply sorting
@@ -116,3 +109,29 @@ class InflationUseCase:
             query = query.order_by(asc(Inflation.year), asc(Inflation.month))
 
         return query
+
+    async def insert_inflation_data(self, inflation_data: InflationData) -> None:
+        """
+        Insert a new inflation record into the database.
+
+        Args:
+            inflation_data: The inflation data to insert
+        """
+
+        inflation_existing_record = (
+            self.db_session.query(Inflation)
+            .filter(Inflation.year == inflation_data.year, Inflation.month == inflation_data.month)
+            .first()
+        )
+
+        if inflation_existing_record:
+            return
+
+        new_record = Inflation(
+            year=inflation_data.year,
+            month=inflation_data.month,
+            annual_inflation_rate=inflation_data.annual_inflation_rate,
+            target=inflation_data.target,
+        )
+        self.db_session.add(new_record)
+        self.db_session.commit()
