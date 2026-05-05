@@ -18,6 +18,7 @@ jobs:
   build-and-push:
     needs: test
     runs-on: ubuntu-latest
+    environment: staging
     permissions:
       packages: write
     steps:
