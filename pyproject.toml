@@ -26,6 +26,7 @@ test = [
 dev = [
     "pre-commit==4.6.0",
     "ruff==0.15.12",
+    "library-skills==0.0.5",
 ]
 
 [tool.uv]
