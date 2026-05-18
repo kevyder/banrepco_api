@@ -13,7 +13,7 @@ dependencies = [
     "uvicorn==0.46.0",
     "pydantic==2.13.3",
     "schedule==1.2.2",
-    "requests==2.33.1",
+    "requests==2.34.2",
     "xmltodict==1.0.4",
 ]
 
