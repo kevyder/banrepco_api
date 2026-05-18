@@ -10,7 +10,7 @@ dependencies = [
     "fastapi-pagination==0.15.12",
     "fastapi[standard]==0.136.1",
     "sqlalchemy-libsql==0.2.0",
-    "uvicorn==0.46.0",
+    "uvicorn==0.47.0",
     "pydantic==2.13.3",
     "schedule==1.2.2",
     "requests==2.33.1",
