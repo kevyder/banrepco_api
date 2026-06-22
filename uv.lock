@@ -90,7 +90,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "library-skills", specifier = "==0.0.5" },
+    { name = "library-skills", specifier = "==0.0.19" },
     { name = "pre-commit", specifier = "==4.6.0" },
     { name = "ruff", specifier = "==0.15.15" },
 ]
@@ -562,15 +562,16 @@ wheels = [
 
 [[package]]
 name = "library-skills"
-version = "0.0.5"
+version = "0.0.19"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "pyyaml" },
     { name = "rich-toolkit" },
     { name = "typer" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/21/d2/a8bc5668da2589d74752bbc9708025d411d31bdd0c4c52bb3b13d41053f8/library_skills-0.0.5.tar.gz", hash = "sha256:f56012ecd0607883262a3c9a5bce2898ae758b88c33543bc3853498c67a75e6c", size = 21154, upload-time = "2026-05-01T09:35:11.228Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/99/4b/fb85dd4c93a8ec99b0e04d12ca81fc08a755ee43c2061069e1d87f6abb66/library_skills-0.0.19.tar.gz", hash = "sha256:fe58b3a06e9ba757f1b48113199a6af93fc15008c9d0a3add543f508576a8516", size = 44098, upload-time = "2026-06-21T16:16:25.793Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d4/a9/719f218289685e4e30ac15d33460cec0899cd1db0461aefceb0200b3f405/library_skills-0.0.5-py3-none-any.whl", hash = "sha256:00f6db02485c21dca1c22e0b3a1415e6dc90fa6beb5af07934b1b8e7e1c2f159", size = 15790, upload-time = "2026-05-01T09:35:10.198Z" },
+    { url = "https://files.pythonhosted.org/packages/37/e5/d8ab3376068360b6e9dc65fb66c52d5b2d5f2b60e34f51aa2e5cf64c5f26/library_skills-0.0.19-py3-none-any.whl", hash = "sha256:99cc10b900860bd354f1ca4a1724f0ce51f5b40246775c1db63567c91e920c6e", size = 25050, upload-time = "2026-06-21T16:16:24.928Z" },
 ]
 
 [[package]]
@@ -960,16 +961,16 @@ wheels = [
 
 [[package]]
 name = "rich-toolkit"
-version = "0.19.7"
+version = "0.20.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "rich" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/42/ba/dae9e3096651042754da419a4042bc1c75e07d615f9b15066d738838e4df/rich_toolkit-0.19.7.tar.gz", hash = "sha256:133c0915872da91d4c25d85342d5ec1dfacc69b63448af1a08a0d4b4f23ef46e", size = 195877, upload-time = "2026-02-24T16:06:20.555Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/29/63/3e427c62f1992945c997d4ec31e2fcb37d26aadbe5aa44ae5b29f7f64d26/rich_toolkit-0.20.1.tar.gz", hash = "sha256:c7336ae281f435c785acecaedc4b71d4b663dc73d9c8079fea96372527e822a4", size = 203473, upload-time = "2026-06-05T08:56:57.679Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fb/3c/c923619f6d2f5fafcc96fec0aaf9550a46cd5b6481f06e0c6b66a2a4fed0/rich_toolkit-0.19.7-py3-none-any.whl", hash = "sha256:0288e9203728c47c5a4eb60fd2f0692d9df7455a65901ab6f898437a2ba5989d", size = 32963, upload-time = "2026-02-24T16:06:22.066Z" },
+    { url = "https://files.pythonhosted.org/packages/00/88/309f07d08155da2ba1d5ceb42d270fb42fbe34a807684543e3ffc10fe713/rich_toolkit-0.20.1-py3-none-any.whl", hash = "sha256:2a6d5f8e15759b9eba5a9ee63da10b275359ead20e5a0fc92bd5b4dbae8ce4bf", size = 35525, upload-time = "2026-06-05T08:56:58.586Z" },
 ]
 
 [[package]]
