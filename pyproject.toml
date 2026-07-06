@@ -7,7 +7,7 @@ requires-python = ">=3.13,<3.15"
 readme = "README.md"
 dependencies = [
     "alembic==1.18.5",
-    "fastapi-pagination==0.15.14",
+    "fastapi-pagination==0.15.15",
     "fastapi[standard]==0.138.0",
     "sqlalchemy-libsql==0.2.0",
     "uvicorn==0.48.0",
